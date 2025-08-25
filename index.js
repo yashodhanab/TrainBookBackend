@@ -8,6 +8,10 @@ app.use(express.json());
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // LOGIN
+app.get('/', (req, res) => {
+  res.send('Welcome to the Train Booking API'); 
+});
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
