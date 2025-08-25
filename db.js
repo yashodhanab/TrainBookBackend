@@ -12,7 +12,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    ca: fs.readFileSync('isrgrootx1.pem')
+    ca: fs.readFileSync('/isrgrootx1.pem')
   }
 }).promise();
 
