@@ -1,5 +1,16 @@
 const mysql = require('mysql2');
+const path = require('path'); 
 const fs = require('fs');
+
+
+// 1. Load SSL certificate safely (with error handling)
+let caCert;
+try {
+  caCert = fs.readFileSync(path.join(__dirname, 'isrgrootx1.pem'));
+} catch (err) {
+  console.error('SSL certificate not found. Falling back to environment variable or disabling SSL.');
+  caCert = process.env.CA_CERT || null; 
+}
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
@@ -11,9 +22,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    ca: fs.readFileSync('isrgrootx1.pem')
-  }
+    ssl: caCert ? { ca: caCert } : { rejectUnauthorized: false } 
 }).promise();
 
 // Function to initialize tables if they do not exist
