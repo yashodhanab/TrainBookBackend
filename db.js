@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-const fs = require('fs');
+// const fs = require('fs');
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
@@ -11,9 +11,9 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    ca: fs.readFileSync('/isrgrootx1.pem')
-  }
+  // ssl: {
+  //   ca: fs.readFileSync('/isrgrootx1.pem')
+  // }
 }).promise();
 
 // Function to initialize tables if they do not exist
