@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./db'); // our pool-based connection
@@ -23,7 +24,7 @@ app.post('/login', async (req, res) => {
 
     const user = users[0];
 
-    // Plaintext password check (NOT secure, ideally use bcrypt)
+
     if (password !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -159,10 +160,11 @@ app.delete('/api/bookings/:id', async (req, res) => {
 // UPDATE DUE DATE
 app.put('/bookings/:id/due-date', async (req, res) => {
   const bookingId = parseInt(req.params.id, 10);
-  const { due_date } = req.body;
+ 
+  const { duedate } = req.body;
 
-  if (!due_date) {
-    return res.status(400).json({ message: 'Please provide a due_date' });
+  if (!duedate) {
+    return res.status(400).json({ message: 'Please provide a duedate' });
   }
   if (isNaN(bookingId)) {
     return res.status(400).json({ message: 'Invalid booking ID' });
@@ -171,7 +173,7 @@ app.put('/bookings/:id/due-date', async (req, res) => {
   try {
     const [result] = await db.query(
       'UPDATE booking SET duedate = ? WHERE bookingid = ?',
-      [due_date, bookingId]
+      [duedate, bookingId]
     );
 
     if (result.affectedRows === 0) {
