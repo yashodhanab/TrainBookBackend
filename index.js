@@ -158,7 +158,7 @@ app.delete('/api/bookings/:id', async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 // UPDATE DUE DATE
-app.put('/bookings/:id', async (req, res) => {
+app.put('api/bookings/:id', async (req, res) => {
   const bookingId = parseInt(req.params.id, 10);
  
   const { duedate } = req.body;
