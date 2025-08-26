@@ -158,10 +158,13 @@ app.delete('/api/bookings/:id', async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 // UPDATE DUE DATE
-app.put('api/bookings/:id', async (req, res) => {
-  const bookingId = parseInt(req.params.id, 10);
+app.put('/api/bookings/:id', async (req, res) => {
+  // const bookingId = parseInt(req.params.id, 10);
+  const bookingId = req.params.id;
  
   const { duedate } = req.body;
+  console.log("Received duedate:", req.body);
+
 
   if (!duedate) {
     return res.status(400).json({ message: 'Please provide a duedate' });
