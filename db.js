@@ -17,7 +17,7 @@ const pool = mysql.createPool({
   host: 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
   port: 4000,
   user: '22AdG2yLcEtpGXX.root',
-  password: 'm0tKUJDhkqIpDPnJ',
+  password: 'bsG0j1aUWK8GnAca',
   database: 'test',
   waitForConnections: true,
   connectionLimit: 10,
