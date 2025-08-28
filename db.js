@@ -1,10 +1,10 @@
-const mysql = require('mysql2');
-const path = require('path'); 
-const fs = require('fs');
+const mysql = require('mysql2'); //library to connect Node with SQL
+const path = require('path'); //helps manage paths
+const fs = require('fs'); //file system read write
 
 
-// 1. Load SSL certificate safely (with error handling)
-let caCert;
+
+let caCert;//caCert hold certificate - .pem
 try {
   caCert = fs.readFileSync(path.join(__dirname, 'isrgrootx1.pem'));
 } catch (err) {
@@ -12,8 +12,8 @@ try {
   caCert = process.env.CA_CERT || null; 
 }
 
-// Create a MySQL connection pool
-const pool = mysql.createPool({
+
+const pool = mysql.createPool({//creates a pool of connections
   host: 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
   port: 4000,
   user: '22AdG2yLcEtpGXX.root',
@@ -25,8 +25,8 @@ const pool = mysql.createPool({
     ssl: caCert ? { ca: caCert } : { rejectUnauthorized: false } 
 }).promise();
 
-// Function to initialize tables if they do not exist
-async function initDb() {
+
+async function initDb() {//if tables don't exist, create them
   try {
     // USERS TABLE
     await pool.query(`
@@ -67,26 +67,27 @@ async function initDb() {
       )
     `);
 
-    console.log('✅ Tables checked/created successfully');
+    console.log(' Tables checked/created successfully');
 
   } catch (err) {
-    console.error('❌ Table creation failed:', err);
+    console.error(' Table creation failed:', err);
   }
 }
 
 // Connect and initialize DB
 async function connectDb() {
   try {
-    const connection = await pool.getConnection();
-    console.log('✅ Connected to MySQL database with SSL');
-    connection.release();
+    const connection = await pool.getConnection();//open connection from pool
+    console.log(' Connected to MySQL database with SSL');
+    connection.release();//release connection back to pool
 
-    await initDb();
+    await initDb();//table creation recheck
   } catch (err) {
-    console.error('❌ Database connection failed:', err);
+    console.error(' Database connection failed:', err);
   }
 }
 
-connectDb();
+connectDb();//run connection
 
-module.exports = pool;
+module.exports = pool;//export pool for use in other files
+//////////////////////////////////////////////////////////////////////////////////////

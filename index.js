@@ -1,8 +1,8 @@
 
-const express = require('express');
-const cors = require('cors');
-const db = require('./db'); // our pool-based connection
-const app = express();
+const express = require('express'); //load framework and create instance
+const cors = require('cors');//middlweref for authentication/cross origin
+const db = require('./db');//database connection 
+const app = express();//create express app
 
 app.use(cors());
 app.use(express.json());
@@ -14,17 +14,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body;//inputs
 
   try {
-    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);//?is for prevent injection
     if (users.length === 0) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const user = users[0];
 
-
+    //validations
     if (password !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -39,7 +39,7 @@ app.post('/login', async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////////////////
 // SIGNUP
 app.post('/signup', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password } = req.body;//inputs
 
   if (!username || !email || !password) {
     return res.status(400).json({ message: 'Please provide username, email, and password' });
